@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>English Mock Test 3</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .question { margin-bottom: 20px; }
+    .question h3 { margin-bottom: 10px; }
+    .options label { display: block; margin-left: 20px; }
+    .submit-btn { margin-top: 20px; }
+    #result { margin-top: 30px; font-weight: bold; }
+    #timer { font-weight: bold; font-size: 1.2em; color: red; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>English Mock Test - 3</h1>
+  <div id="timer">Time Left: 12:00</div>
+  <form id="quizForm">
+    <!-- Questions will be inserted here -->
+    <button type="button" class="submit-btn" onclick="calculateScore()">Submit</button>
+  </form>
+  <div id="result"></div>
+
+  <script>
+    // Countdown Timer (12 minutes)
+    let timeLeft = 15* 60;
+    const timerDisplay = document.getElementById("timer");
+    const timer = setInterval(() => {
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      timerDisplay.innerText = `Time Left: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        calculateScore();
+        timerDisplay.innerText = "Time's up!";
+      }
+      timeLeft--;
+    }, 1000);
+
+    const questionsData = [
+      { q: "Choose the antonym of the word: Jeopardy", a: "A", options: ["Safety", "Danger", "Precaution", "Risk"] },
+      { q: "The place is too much noisy.", a: "A", options: ["too noisy", "much noisy", "so much noisy", "no error"] },
+      { q: "Choose the synonym of the word: Ostentatious", a: "A", options: ["showy", "tasteful", "sudden", "quick"] },
+      { q: "Avika said to her mother, \"you are very late today.\"", a: "C", options: ["Avika asked her mother why she was late today.", "Avika told her mother that she is very late that day.", "Avika told her mother that she was very late that day.", "Avika told her mother that you were very late that day."] },
+      { q: "Choose the antonym of the word: Colloquial", a: "D", options: ["informal", "slang", "slack", "formal"] },
+      { q: "Choose the incorrectly spelt word.", a: "D", options: ["Progress", "Mystery", "Pilgrim", "Symtons"] },
+      { q: "Identify the grammatical error: Before take this medicine you should consult a doctor.", a: "A", options: ["Before take", "a doctor", "this medicine", "you should consult"] },
+      { q: "Fill in the blank: When there are negative and toxic thoughts _______ your mind, you can never think positively.", a: "C", options: ["plotting", "shouting", "clouding", "persuading"] },
+      { q: "I couldn’t sleep in case of being very tired.", a: "A", options: ["in spite of", "in order of", "even though", "No substitution required"] },
+      { q: "Identify the grammatical error: I want you to complete this work by two days.", a: "A", options: ["by two days", "I want you", "this work", "to complete"] },
+      { q: "Choose the synonym of the word: Resilient", a: "D", options: ["Baseless", "Lazy", "Furious", "Supple"] },
+      { q: "One who rides horses in races", a: "A", options: ["jockey", "sprinter", "athlete", "porter"] },
+      { q: "Fill in the blank: The rise in the Irrawaddy dolphin (13) …… in Chilka", a: "A", options: ["population", "clan", "natives", "inhabitants"] },
+      { q: "Fill in the blank: evolution of (14)……. fish enclosures", a: "B", options: ["unwarranted", "illegal", "illegitimate", "unconstitutional"] },
+      { q: "Fill in the blank: thousands of hectares of Chilka lake were made (15)…… free", a: "D", options: ["trespass", "confiscation", "intervention", "encroachment"] },
+      { q: "Fill in the blank: (16)……, due to the COVID-19 lockdown", a: "B", options: ["whereas", "moreover", "nevertheless", "however"] },
+      { q: "Fill in the blank: which made it (17)……. for dolphins", a: "A", options: ["conducive", "hurtful", "detrimental", "disturbing"] },
+      { q: "Identify the grammatical error: Why didn’t you submitted your project on time?", a: "A", options: ["you submitted", "your project", "Why didn’t", "on time?"] },
+      { q: "Fill in the blank: By this time next week, we _______ Shimla.", a: "A", options: ["will have reached", "would have reached", "would reach", "shall reach"] },
+      { q: "One word substitute: Stop something from burning", a: "B", options: ["prevent", "extinguish", "torch", "scorch"] },
+      { q: "Express in active voice: Have all the bills been verified by someone?", a: "B", options: ["Has someone verify all the bills?", "Has someone verified all the bills?", "Is someone verified all the bills?", "Have someone verified all the bills?"] },
+      { q: "Meaning of idiom: Back in saddle", a: "B", options: ["Learn how to ride", "Resume duty", "Teach someone riding", "Put a new saddle"] },
+      { q: "Indirect speech: My teacher forbids to trust one’s relatives.", a: "A", options: ["My teacher says, ‘Never trust your relatives.’", "My teacher says, ‘Never trust my relatives.’", "My teacher says, ‘Never trusted your relatives.’", "My teacher said, ‘Never trust your relatives.’"] },
+      { q: "Express in active voice: Let the shops be opened", a: "B", options: ["Have the shops opened?", "Open the shops", "The shops should be opened", "The shops are open"] },
+      { q: "Choose the incorrectly spelt word.", a: "D", options: ["Eradication", "Regularization", "Manipulation", "Menifestation"] }
+    ];
+
+    const form = document.getElementById("quizForm");
+    const submitBtn = form.querySelector(".submit-btn");
+
+    questionsData.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.setAttribute("data-answer", q.a);
+
+      const questionNum = i + 1;
+      const questionText = document.createElement("h3");
+      questionText.innerHTML = `${questionNum}. ${q.q}`;
+      div.appendChild(questionText);
+
+      const optionsDiv = document.createElement("div");
+      optionsDiv.className = "options";
+
+      q.options.forEach((opt, j) => {
+        const optionLetter = String.fromCharCode(65 + j);
+        const label = document.createElement("label");
+        label.innerHTML = `<input type="radio" name="q${questionNum}" value="${optionLetter}"> ${optionLetter}) ${opt}`;
+        optionsDiv.appendChild(label);
+      });
+
+      div.appendChild(optionsDiv);
+      form.insertBefore(div, submitBtn);
+    });
+
+    function calculateScore() {
+      clearInterval(timer); // stop timer when submitted
+      const questions = document.querySelectorAll('.question');
+      let score = 0;
+      let total = questions.length * 2;
+
+      questions.forEach((question) => {
+        const correctAnswer = question.getAttribute('data-answer');
+        const selected = question.querySelector('input[type=radio]:checked');
+
+        if (selected) {
+          if (selected.value === correctAnswer) {
+            score += 2;
+          } else {
+            score -= 0.5;
+          }
+        }
+      });
+
+      score = Math.max(0, score);
+      document.getElementById('result').innerText = `Your Score: ${score} / ${total}`;
+    }
+  </script>
+</body>
+</html>
